@@ -9,6 +9,7 @@ const form = ref({
   firstName: '',
   lastName: '',
   postalCode: '',
+  message:'',
   city: '',
   street: '',
   email: '',
@@ -30,6 +31,10 @@ const rules = {
     required: helpers.withMessage('Last name is required.', required),
     noSpaces: helpers.withMessage('Last name must not contain spaces.', helpers.regex(/^\S+$/)),
     onlyLetters: helpers.withMessage('Last name must only contain letters.', helpers.regex(/^[a-zA-Z]+$/)),
+  },
+  message: {
+    required: helpers.withMessage('Message is required', required),
+
   },
   postalCode: {
     required: helpers.withMessage('Postal code is required.', required),
@@ -57,16 +62,17 @@ const rules = {
   },
 };
 
-// Initialize Vuelidate
+//vuelidate
 const v$ = useVuelidate(rules, form);
 
-// Form submission
+
 const submitForm = () => {
   v$.value.$touch();
   if (v$.value.$invalid) {
     console.log('Form contains errors');
   } else {
     console.log('Form submitted successfully!', form.value);
+    
   }
 };
 </script>
@@ -101,6 +107,13 @@ const submitForm = () => {
         <label for="lastName">Last Name</label>
         <input id="lastName" type="text" class="input" v-model="form.lastName" :aria-invalid="v$.lastName.$error" />
         <p v-if="v$.lastName.$error" class="text-red-500">{{ v$.lastName.$errors[0].$message }}</p>
+      </div>
+      <!-- Message -->
+
+      <div class="mb-4">
+        <label for="message">Message</label>
+        <input id="message" type="text" class="input" v-model="form.message" :aria-invalid="v$.message.$error" />
+        <p v-if="v$.message.$error" class="text-red-500">{{ v$.message.$errors[0].$message }}</p>
       </div>
 
       <!-- Postal Code -->
@@ -149,7 +162,7 @@ const submitForm = () => {
       <p v-if="v$.terms.$error" class="text-red-500">{{ v$.terms.$errors[0].$message }}</p>
 
       <!-- Submit -->
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" @click="submitForm()" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </template>
