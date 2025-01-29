@@ -40,8 +40,8 @@ const rules = {
     required: helpers.withMessage('Postal code is required.', required),
     // Keep your numeric rules for postalCode
     numeric: helpers.withMessage('Postal code must contain only numbers.', helpers.regex(/^\d+$/)),
-    minLength: helpers.withMessage('Postal code must be 5 digits.', minLength(5)),
-    maxLength: helpers.withMessage('Postal code must be 5 digits.', maxLength(5)),
+    minLength: helpers.withMessage('Postal code must be 4 digits.', minLength(4)),
+    maxLength: helpers.withMessage('Postal code must be max. 5 digits.', maxLength(5)),
   },
   city: {
     required: helpers.withMessage('City is required.', required),
@@ -68,7 +68,7 @@ const rules = {
 const v$ = useVuelidate(rules, form);
 
 const focusFirstInvalidField = () => {
-  const firstInvalid = Object.entries(v$.value).find(([key, field]) => field?.$error);
+  const firstInvalid = Object.entries(v$.value).find(([_key, field]) => field?.$error);
   if (firstInvalid) {
     const [key] = firstInvalid;
     const invalidElement = document.querySelector(`#${key}`) as HTMLElement; // Cast to HTMLElement
